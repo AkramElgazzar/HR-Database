@@ -1,6 +1,6 @@
 -------------------------------------------------<< VIEWS >>--------------------------------------------
-
-/*1- This is a Summary View for the HR Manger over their department*/
+--VIEW 1--
+/*1-1 This is a Summary View for the HR Manger over their department*/
 
 CREATE View HR 
 AS
@@ -17,7 +17,7 @@ select * from HR
 
 
 
-/*2- This is a Summary View for the Sales Manger over their department*/
+/*1-2 This is a Summary View for the Sales Manger over their department*/
 
 CREATE View Sales 
 AS
@@ -34,7 +34,7 @@ select * from Sales
 
 
 
-/*3- This is a Summary View for the Technology Manger over their department*/
+/*1-3 This is a Summary View for the Technology Manger over their department*/
 
 CREATE View Technology 
 AS
@@ -50,7 +50,7 @@ Go
 select * from Technology
 
 
-/*4- View to display Active Employees in the company*/
+/*1-4 View to display Active Employees in the company*/
 
 Create view ActiveEmployees
 as 
@@ -61,7 +61,7 @@ select * from ActiveEmployees
 
 /**************************************************************/
 
---View --2
+--View 2--
 /*Rating for employees' satisfaction with their environment. 
 (Count 1, 2, 3, 4, and 5) separately.*/
 GO
@@ -77,7 +77,7 @@ DROP VIEW environment_satisfaction --drop view
 
 
 /**************************************************************/
---View --3
+--View 3--
 /*Rating for employees' satisfaction with their job role. 
 (Count 1, 2, 3, 4, and 5) separately.*/
 GO
@@ -92,7 +92,7 @@ ORDER BY job_satisfaction_rate
 DROP VIEW job_satisfaction --drop view
 
 /**************************************************************/
---View --4
+--View 4--
 /*Rating for employees' satisfaction with their relationships at work. 
 (Count 1, 2, 3, 4, and 5) separately.*/
 GO
@@ -108,7 +108,7 @@ DROP VIEW relationships_satisfaction --drop view
 
 
 /**************************************************************/
---View --5
+--View 5--
 /*Rating for employees' satisfaction with their work-life balance. 
 (Count 1, 2, 3, 4, and 5) separately.*/
 GO
@@ -124,7 +124,7 @@ DROP VIEW work_life_balance_satisfaction --drop view
 
 
 /**************************************************************/
---View --6
+--View 6--
 /*Rating for employees' performance based on their own views. 
 (Count 3, 4, 5) separately.*/
 GO
@@ -144,7 +144,7 @@ DROP VIEW self_rate --drop view
 
 -------------------------------------------------<< Queries >>-------------------------------------------------------------------------------
 
--- 1- Retrive for each Department its' name , total number of employee , total salary , Cume_Dist and STD
+--Query 1-- Retrive for each Department its' name , total number of employee , total salary , Cume_Dist and STD
 
 SELECT d.DepartmentName, COUNT(e.FirstName) as Number_Employees
        , SUM(e.Salary) as Total_Salary , CUME_DIST() OVER(ORDER BY SUM(e.Salary)) AS CUM_DIST 
@@ -154,7 +154,7 @@ WHERE d.DepartmentID = e.DepartmentID
 GROUP BY d.DepartmentName
 ORDER BY Total_Salary DESC
 
--- 2- Retrive for each Department its' name , MAX SALARY , Average_Salary, Minumum_Salary
+--Query 2-- Retrive for each Department its' name , MAX SALARY , Average_Salary, Minumum_Salary
 
 SELECT d.DepartmentName, MAX(e.Salary) Maxmimum_Salary , AVG(e.Salary) Average_Salary ,MIN(e.Salary) Minumum_Salary
 FROM Employee e, Department d
@@ -162,7 +162,7 @@ WHERE d.DepartmentID = e.DepartmentID
 GROUP BY d.DepartmentName
 
 
--- 3- Retrive for each Department its' name , Employee_Name , EducationLevel , DepartmentName ,Salary , YearsSinceLastPromotion
+--Query 3-- Retrive for each Department its' name , Employee_Name , EducationLevel , DepartmentName ,Salary , YearsSinceLastPromotion
 
 SELECT e.FirstName + ' ' +e.LastName as Employee_Name , ed.EducationLevel , ed.EducationField
        ,d.DepartmentName, e.Salary , h.YearsSinceLastPromotion
@@ -176,7 +176,7 @@ ORDER BY d.DepartmentName, e.Salary DESC
 
 
 
--- 4- Get the max 5 salaries??? 
+--Query 4-- Get the max 5 salaries??? 
 
 SELECT top(5) Salary
 FROM Employee
@@ -184,14 +184,14 @@ ORDER BY Salary DESC
 
 
 
--- 5- Average of employees' age.
+--Query 5-- Average of employees' age.
 
 SELECT AVG(Age ) [Average Age for Employee]
 FROM Employee 
 
 
 
---  6- How many employees age from 25 to 40 and from 40 to 60?
+--Query  6-- How many employees age from 25 to 40 and from 40 to 60?
 
 SELECT COUNT(*) AS 'Number of Employees'
 FROM Employee
@@ -199,14 +199,14 @@ WHERE Age BETWEEN 25 AND 40 OR Age BETWEEN 40 AND 60;
 
 
 
--- 7- Count the number of employees in each department then rank them in ascending order.
+--Query 7-- Count the number of employees in each department then rank them in ascending order.
 
 SELECT DepartmentID, COUNT(*) AS NumberOfEmployees
 FROM Employee
 GROUP BY DepartmentID
 ORDER BY NumberOfEmployees ASC;
 
---Query --9
+--Query 8 --
 --What is the most frequently reviewed month for employees?
 SELECT TOP 5 MONTH(ReviewDate) review_month, COUNT(ReviewID) no_of_reviews
 FROM Review
@@ -215,7 +215,7 @@ ORDER BY no_of_reviews DESC
 
 
 /**************************************************************/
---Query --10
+--Query 9 --
 --What is the job that employees are most satisfied with?
 SELECT e.JobRole, COUNT(*) employee_count
 FROM Employee e
@@ -227,7 +227,7 @@ ORDER BY employee_count DESC
 
 
 /**************************************************************/
---Query --11
+--Query 10 --
 --What is the job that employees are least satisfied with?
 SELECT TOP 10 e.JobRole, COUNT(*) employee_count
 FROM Employee e
@@ -239,7 +239,7 @@ ORDER BY employee_count DESC
 
 
 /**************************************************************/
---Query --12
+--Query 11--
 /*Who is the best employees in each department (have the same rank)
 from the manager's point of view? (ManagerRating)*/
 SELECT *
@@ -259,7 +259,7 @@ WHERE dr_best_average = 1
 
 
 /**************************************************************/
---Query --13
+--Query 12--
 /*Know the number of male employees and the number of female employees in the company.  
 (in each department)*/
 SELECT e.DepartmentID, d.DepartmentName, e.Gender, COUNT(e.gender) gender_count
@@ -272,7 +272,7 @@ ORDER BY e.DepartmentID, gender_count DESC
 
 
 /**************************************************************/
---Query --16
+--Query 13--
 /*How many employees' age is greater than the average of all employees' age?*/
 SELECT COUNT(*)
 FROM Employee
@@ -283,7 +283,7 @@ WHERE Age > (
 
 
 /**************************************************************/
---Query --17
+--Query 14--
 /*Count Frequency of the three categories of business travel*/
 SELECT BusinessTravel, COUNT(*) business_travel_frequency 
 FROM Employee
@@ -293,7 +293,7 @@ ORDER BY COUNT(*) DESC
 
 
 /**************************************************************/
---Query --19
+--Query 15--
 /*How many employees are more than 35 km away from work? and What is their average age?*/
 SELECT COUNT(EmployeeID) employee_count, AVG(Age) average_age
 FROM Employee
@@ -301,7 +301,7 @@ WHERE DistanceFromHome > 35 AND Attrition = 'No'
 
 
 /**************************************************************/
---Query --20
+--Query 16--
 /*What is the number of employees in each state and what are their departments?*/
 SELECT d.DepartmentName, e.State, COUNT(e.EmployeeID) employees_number
 FROM Employee e, Department d
@@ -311,9 +311,8 @@ GROUP BY e.State, d.DepartmentName
 
 
 /**************************************************************/
---Query --21
+--Query 17--
 /*Does the level of education affect the job role or salary?*/
---From the result we fined that level 5 in education affects the salay in a good way
 SELECT ed.EducationLevel, AVG(em.Salary) average_salary
 FROM Employee em, Education ed
 WHERE ed.EmployeeID = em.EmployeeID
@@ -323,7 +322,7 @@ ORDER BY AVG(em.Salary) DESC
 
 
 /**************************************************************/
---Query --22
+--Query 18--
 /*How many employees are in each job role?*/
 SELECT JobRole, COUNT(EmployeeID) employees_count
 FROM Employee
@@ -333,7 +332,7 @@ ORDER BY employees_count DESC
 
 
 /**************************************************************/
---Query --23
+--Query 19--
 /*What is the average salary for each job role?*/
 SELECT JobRole, AVG(Salary) average_salary
 FROM Employee
@@ -343,7 +342,7 @@ ORDER BY AVG(Salary) DESC
 
 
 /**************************************************************/
---Query --24
+--Query 20--
 /*What is the count of "yes" and"no" in overtime for each job role?*/
 SELECT JobRole, COUNT(OverTime) yes_OverTime
 FROM Employee
@@ -359,9 +358,8 @@ ORDER BY COUNT(OverTime) DESC
 
 
 /**************************************************************/
---Query --25
+--Query 21--
 /*What is the most and least hiring year?*/
---From the insights we see that 2022 is the most hiring year and 2017 is the least hiring year
 SELECT YEAR(HireDate) hiring_year, COUNT(EmployeeID) employee_count
 FROM Employee
 WHERE YEAR(HireDate) IS NOT NULL
@@ -370,9 +368,8 @@ ORDER BY employee_count DESC
 
 
 /**************************************************************/
---Query --26
+--Query 22--
 /*Does gender affect performance?*/
---From the insights we see that gender doesn't affect the performance
 SELECT Gender, AVG(ManagerRate) average_manager_rate
 FROM Employee e, Review r
 WHERE r.EmployeeID = e.EmployeeID
@@ -381,9 +378,8 @@ GROUP BY Gender
 
 
 /**************************************************************/
---Query --27
+--Query 23--
 /*What is the state which has the best employees?*/
---We see that all states have the same average employees rate, so there is not the best state
 SELECT State, AVG(ManagerRate) average_manager_rate
 FROM Employee e, Review r
 WHERE r.EmployeeID = e.EmployeeID
